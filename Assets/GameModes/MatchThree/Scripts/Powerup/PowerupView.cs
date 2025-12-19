@@ -3,6 +3,7 @@ using UnityEngine.UI;
 
 public class PowerupView : MonoBehaviour
 {
+    [SerializeField]
     private PowerupData PowerupData;
     [SerializeField]
     private Image _graphic; 
@@ -11,6 +12,7 @@ public class PowerupView : MonoBehaviour
     {
         this.PowerupData = powerUpData;
         _graphic.sprite = powerUpData.FaceSprite;
+        _graphic.color = powerUpData.FaceColor;
     }
 
     public PowerupData GetPowerupData() => this.PowerupData;

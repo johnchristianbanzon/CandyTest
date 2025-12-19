@@ -18,6 +18,8 @@ public class GemView : MonoBehaviour
 
     public GemData GetGemData() => this.GemData;
 
+    public Image GetGraphic() => this._graphic;
+
     public void SwapAnimation(GemView targetGemView)
     {
         var speed = 50f;

@@ -14,6 +14,7 @@ public class BoardManager
     private List<MatchGroupCheck> _matchGroupCheck = new List<MatchGroupCheck>();
     private Action<BoardCell, EnumNeighborDirection> _onDragBoardCell;
     private Action _onCheckForMatches;
+    private Action<bool> _onAllowDrag;
     private BoardCell _currectBoardCellDragged;
 
     public BoardManager(IGemFactory gemFactory, [Key(MatchThreeScopeKey.BoardCell)] BoardCell boardCell, IPowerupFactory powerUpFactory)
@@ -63,9 +64,9 @@ public class BoardManager
     {
         //boardcell.Match();
 
-        var bombSeriesDelay = 0.1f;
+        var bombSeriesDelay = 0.05f;
         var bombDestroyDelay = 1.2f;
-       
+       _onAllowDrag?.Invoke(false);
         for (int i = 0; i < powerUpData.Target.Length; i++)
         {
             var targetHit = powerUpData.Target[i];
@@ -235,6 +236,7 @@ public class BoardManager
         if (_currectBoardCellDragged != null && spawnPowerUp)
         {
             _boardLines[_currectBoardCellDragged.LineIndex].SpawnPowerUp(_currectBoardCellDragged.CellIndex);
+            _currectBoardCellDragged = null;
         }
    
         if (matches.Count > 0)
@@ -283,9 +285,9 @@ public class BoardManager
         return createRandomGem;
     }
 
-    private PowerupView GetPowerUp()
+    private PowerupView GetPowerUp(EnumPowerUp powerUp)
     {
-        var createRandomGem = _powerUpFactory.CreatePowerUp(EnumPowerUp.RubyBomb);
+        var createRandomGem = _powerUpFactory.CreatePowerUp(powerUp);
 
         return createRandomGem;
     }
@@ -300,10 +302,11 @@ public class BoardManager
       
     }
 
-    public void Initialize(Transform layout, Action<BoardCell, EnumNeighborDirection> onDragBoardCell, Action onCheckForMatches)
+    public void Initialize(Transform layout, Action<BoardCell, EnumNeighborDirection> onDragBoardCell, Action onCheckForMatches, Action<bool> onAllowDrag)
     {
         _onDragBoardCell = onDragBoardCell;
         _boardLayout = layout;
         _onCheckForMatches = onCheckForMatches;
+        _onAllowDrag = onAllowDrag;
     }
 }

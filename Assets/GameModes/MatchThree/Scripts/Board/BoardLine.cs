@@ -10,7 +10,7 @@ public class BoardLine
     public int BoardLineIndex = 0;
 
     public Func<GemView> OnGetGem { get; internal set; }
-    public Func<PowerupView> OnGetPowerUp { get; internal set; }
+    public Func<EnumPowerUp,PowerupView> OnGetPowerUp { get; internal set; }
     public BoardLine(int boardLineIndex)
     {
         BoardLineIndex = boardLineIndex;
@@ -31,12 +31,8 @@ public class BoardLine
             gem.transform.SetParent(_boardCells[i].transform);
             _boardCells[i].GemView = gem;
             _boardCells[i].IsPowerUp = false;
-            gem.transform.position = _boardCells[0].transform.position + new Vector3(0, 15f);
-            var speed = 50f;
-            var delay = (_boardCells.Count - 1 - i) * 0.14f;
-            var lineDelay = BoardLineIndex * 0.06f; 
-            gem.transform.DOMoveY(_boardCells[i].transform.position.y, speed).SetSpeedBased(true).SetEase(Ease.OutCirc).SetDelay(delay + lineDelay);
-            gem.transform.localScale = Vector3.one;
+
+            CellDropAnimation(gem, _boardCells[i], i);
         }
 
     }
@@ -64,19 +60,10 @@ public class BoardLine
                     //FILL
 
                     var gem = OnGetGem?.Invoke();
-                    gem.transform.SetParent(_boardCells[i].transform);
+                 
                     _boardCells[i].GemView = gem;
                     _boardCells[i].IsPowerUp = false;
-                    gem.transform.position = _boardCells[0].transform.position + new Vector3(0, 15f);
-                    var speed = 50f;
-                    var delay = (_boardCells.Count - 1 - i) * 0.14f;
-                    var lineDelay = BoardLineIndex * 0.06f;
-                    gem.transform.DOMoveY(_boardCells[i].transform.position.y, speed).SetSpeedBased(true).SetEase(Ease.OutCirc).SetDelay(delay + lineDelay).OnComplete(delegate
-                    {
-                        startingCell.IsMatched = false;
-                    });
-                    //currentCell.IsMatched = false;
-                    gem.transform.localScale = Vector3.one;
+                    CellDropAnimation(gem, _boardCells[i],i);
                     break;
                 }
 
@@ -91,16 +78,11 @@ public class BoardLine
                     startingCell.IsPowerUp = currentCell.IsPowerUp;
                     currentCell.GetGraphic().transform.SetParent(startingCell.transform);
                     currentCell.IsMatched = true;
-                    var speed = 50f;
-                    var delay = (_boardCells.Count - 1 - i) * 0.14f;
-                    var lineDelay = BoardLineIndex * 0.06f;
-                    currentCell.GetGraphic().transform.DOMoveY(_boardCells[i].transform.position.y, speed).SetSpeedBased(true).SetEase(Ease.OutCirc).SetDelay(delay + lineDelay).OnComplete(delegate
-                    {
-                        startingCell.IsMatched = false;
-                    });
-                    _boardCells[i].GemView = currentCell.GemView;
+                    CellCollpaseAnimation(currentCell, _boardCells[i],i);
+                     _boardCells[i].GemView = currentCell.GemView;
                     _boardCells[i].IsPowerUp = currentCell.IsPowerUp;
                     _boardCells[i].PowerUpView = currentCell.PowerUpView;
+
                     break;
                 }
             }
@@ -111,7 +93,7 @@ public class BoardLine
 
     public void SpawnPowerUp(int cellIndex)
     {
-        var powerUp = OnGetPowerUp?.Invoke();
+        var powerUp = OnGetPowerUp?.Invoke((EnumPowerUp)_boardCells[cellIndex].GemView.GetGemData().GemType);
         _boardCells[cellIndex].PowerUpView = powerUp;
         powerUp.transform.position = _boardCells[cellIndex].transform.position;
         powerUp.transform.localScale = Vector3.zero;
@@ -121,8 +103,32 @@ public class BoardLine
         _boardCells[cellIndex].IsMatched = false;
     }
 
-    private void CellDropDownAnimation(BoardCell boardCell)
+    private void CellDropAnimation(GemView graphicObject, BoardCell targetCell, int index)
     {
+        graphicObject.transform.SetParent(targetCell.transform);
+        graphicObject.GetGraphic().DOFade(0, 0.004f);
+        graphicObject.transform.position = _boardCells[0].transform.position + new Vector3(0, 15f);
+        var speed = 50f;
+        var delay = (_boardCells.Count - 1 - index) * 0.14f;
+        var lineDelay = BoardLineIndex * 0.06f;
+        graphicObject.transform.DOMoveY(targetCell.transform.position.y, speed).SetSpeedBased(true).SetEase(Ease.OutCirc).SetDelay(delay + lineDelay).OnComplete(delegate
+        {
+            _boardCells[index].IsMatched = false;
+        }).OnStart(delegate
+        {
+            graphicObject.GetGraphic().DOFade(1, 0.2f);
+        });
+        graphicObject.transform.localScale = Vector3.one;
+    }
 
+    private void CellCollpaseAnimation(BoardCell boardCell, BoardCell targetCell, int index)
+    {
+        var speed = 50f;
+        var delay = (_boardCells.Count - 1 - index) * 0.14f;
+        var lineDelay = BoardLineIndex * 0.06f;
+        boardCell.GetGraphic().transform.DOMoveY(targetCell.transform.position.y, speed).SetSpeedBased(true).SetEase(Ease.OutCirc).SetDelay(delay + lineDelay).OnComplete(delegate
+        {
+            targetCell.IsMatched = false;
+        });
     }
 }

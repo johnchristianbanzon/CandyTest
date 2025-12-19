@@ -1,5 +1,3 @@
-
-using System;
 using System.Collections;
 using UnityEngine;
 using VContainer;
@@ -12,15 +10,21 @@ public class MatchThreeView : BaseView
     private Transform _boardLayout;
     private Coroutine _onCheckMatch;
     private bool IsCheckingMatch;
+    public bool AllowSwap=true;
 
     private void Start()
     {
       //  _onCheckMatch = StartCoroutine(OnCheckMatchCoroutine());
-        _boardManager.Initialize(_boardLayout, OnDragBoardCell,OnCheckMatches);
+        _boardManager.Initialize(_boardLayout, OnDragBoardCell,OnCheckMatches, OnAllowSwap);
         _boardManager.SetupBoard(new BoardSetting(5,5));
         StartCoroutine(StartGame());
-        OnCheckMatches();
+        
 
+    }
+
+    public void OnAllowSwap(bool allowSwap)
+    {
+        AllowSwap = allowSwap;
     }
 
     private void OnCheckMatches()
@@ -34,23 +38,37 @@ public class MatchThreeView : BaseView
 
     private void OnDragBoardCell(BoardCell cell, EnumNeighborDirection direction)
     {
+        if (AllowSwap==false)
+        {
+            return;
+        }
         _boardManager.SwapBoardCells(cell, direction, OnCheckMatches);
 
     }
 
     private IEnumerator OnCheckMatchCoroutine()
     {
-        Debug.Log("CHECKING MATCHES!!");
         IsCheckingMatch = true;
-        yield return new WaitForSeconds(2f);
+        AllowSwap = false;
+        yield return new WaitForSeconds(1.5f);
 
         var hasMatches = _boardManager.CheckBoardMatch();
-        IsCheckingMatch = false;
+      
+   
         if (hasMatches)
         {
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(1.5f);
             _boardManager.CollapseAndFillBoard();
+          
+            yield return new WaitForSeconds(0.5f);
+            AllowSwap = true;
+            IsCheckingMatch = false;
             OnCheckMatches();
+        }
+        else
+        {
+            AllowSwap = true;
+            IsCheckingMatch = false;
         }
     }
 
@@ -58,7 +76,8 @@ public class MatchThreeView : BaseView
     {
         yield return new WaitForSeconds(0.1f);
         _boardManager.StartGame();
-
+        yield return new WaitForSeconds(0.5f);
+        OnCheckMatches();
     }
 
 
