@@ -1,0 +1,95 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1a5f0bc24312b4d46adab9bcc6cfeeb0, type: 3}
+  m_Name: PowerupContainer
+  m_EditorClassIdentifier: 
+  PowerUpData:
+  - Enum: 3
+    FaceSprite: {fileID: 21300000, guid: 3eb52d8f2ce44c3498b8772b66f7662f, type: 3}
+    FaceColor: {r: 1, g: 0, b: 0, a: 1}
+    Target:
+    - {x: 0, y: 1}
+    - {x: 0, y: -1}
+    - {x: 0, y: -2}
+    - {x: 0, y: 2}
+    - {x: 1, y: 0}
+    - {x: 1, y: -1}
+    - {x: 1, y: 1}
+    - {x: -1, y: 0}
+    - {x: -1, y: 1}
+    - {x: -1, y: -1}
+    - {x: -2, y: 0}
+    - {x: 2, y: 0}
+  - Enum: 0
+    FaceSprite: {fileID: 21300000, guid: 3eb52d8f2ce44c3498b8772b66f7662f, type: 3}
+    FaceColor: {r: 0.20545568, g: 0.764151, b: 0.73564816, a: 1}
+    Target:
+    - {x: 0, y: 1}
+    - {x: 0, y: -1}
+    - {x: 0, y: -2}
+    - {x: 0, y: 2}
+    - {x: 1, y: 0}
+    - {x: 1, y: -1}
+    - {x: 1, y: 1}
+    - {x: -1, y: 0}
+    - {x: -1, y: 1}
+    - {x: -1, y: -1}
+    - {x: -2, y: 0}
+    - {x: 2, y: 0}
+  - Enum: 2
+    FaceSprite: {fileID: 21300000, guid: 3eb52d8f2ce44c3498b8772b66f7662f, type: 3}
+    FaceColor: {r: 0.8396226, g: 0.25743148, b: 0.81374377, a: 1}
+    Target:
+    - {x: 0, y: 1}
+    - {x: 0, y: -1}
+    - {x: 0, y: -2}
+    - {x: 0, y: 2}
+    - {x: 1, y: 0}
+    - {x: 1, y: -1}
+    - {x: 1, y: 1}
+    - {x: -1, y: 0}
+    - {x: -1, y: 1}
+    - {x: -1, y: -1}
+    - {x: -2, y: 0}
+    - {x: 2, y: 0}
+  - Enum: 1
+    FaceSprite: {fileID: 21300000, guid: 3eb52d8f2ce44c3498b8772b66f7662f, type: 3}
+    FaceColor: {r: 0.24850415, g: 0.7735849, b: 0.22988607, a: 1}
+    Target:
+    - {x: 0, y: 1}
+    - {x: 0, y: -1}
+    - {x: 0, y: -2}
+    - {x: 0, y: 2}
+    - {x: 1, y: 0}
+    - {x: 1, y: -1}
+    - {x: 1, y: 1}
+    - {x: -1, y: 0}
+    - {x: -1, y: 1}
+    - {x: -1, y: -1}
+    - {x: -2, y: 0}
+    - {x: 2, y: 0}
+  - Enum: 4
+    FaceSprite: {fileID: 21300000, guid: 3eb52d8f2ce44c3498b8772b66f7662f, type: 3}
+    FaceColor: {r: 1, g: 0.9182556, b: 0.10849059, a: 1}
+    Target:
+    - {x: 0, y: 1}
+    - {x: 0, y: -1}
+    - {x: 0, y: -2}
+    - {x: 0, y: 2}
+    - {x: 1, y: 0}
+    - {x: 1, y: -1}
+    - {x: 1, y: 1}
+    - {x: -1, y: 0}
+    - {x: -1, y: 1}
+    - {x: -1, y: -1}
+    - {x: -2, y: 0}
+    - {x: 2, y: 0}
